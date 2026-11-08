@@ -1,0 +1,11 @@
+{
+  "peak_sun_hours": 4.3,
+  "autonomy_days": 1.5,
+  "battery_voltage_v": 48,
+  "system_derate": 0.75,
+  "depth_of_discharge": 0.8,
+  "battery_efficiency": 0.9,
+  "power_factor": 0.9,
+  "inverter_margin": 1.25,
+  "notes": "Illustrative values. Replace with measured site load, verified solar resource and certified equipment specifications."
+}
