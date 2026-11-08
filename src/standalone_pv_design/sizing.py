@@ -37,7 +37,7 @@ def calculate_daily_energy(load_profile_w, interval_hours=1.0):
 
 
 def size_pv_array(daily_energy_kwh, peak_sun_hours, system_derate=0.75,
-                  inverter_efficiency=0.92):
+                  inverter_efficiency=1.0):
     """Estimate PV kWp from daily AC energy, PSH, derate and inverter efficiency.
 
     system_derate is the combined PV-side performance ratio before the
@@ -55,7 +55,7 @@ def size_pv_array(daily_energy_kwh, peak_sun_hours, system_derate=0.75,
 
 
 def size_battery(daily_energy_kwh, autonomy_days, depth_of_discharge=0.8,
-                 battery_efficiency=0.9, inverter_efficiency=0.92):
+                 battery_efficiency=0.9, inverter_efficiency=1.0):
     """Estimate nominal battery energy for an AC load and autonomy target.
 
     battery_efficiency is treated as a one-way discharge/conversion factor
@@ -127,10 +127,15 @@ def design_system(
         "daily_energy_kwh": daily_kwh,
         "peak_load_w": peak_w,
         "pv_array_kwp_preliminary": pv_kwp,
+        "pv_array_kwp": pv_kwp,
         "battery_nominal_kwh_preliminary": battery_kwh,
+        "battery_nominal_kwh": battery_kwh,
         "battery_capacity_ah_at_nominal_voltage": battery_ah,
+        "battery_capacity_ah": battery_ah,
         "inverter_continuous_kva_preliminary": inverter_kva,
+        "inverter_rating_kva": inverter_kva,
         "charge_controller_output_current_a_preliminary": controller_output_current,
+        "charge_controller_current_a_preliminary": controller_output_current,
         "assumptions": {
             "peak_sun_hours": float(peak_sun_hours),
             "system_derate": float(system_derate),
@@ -176,7 +181,9 @@ def check_pv_string_configuration(
         raise ValueError("string-check inputs must be finite")
     if module_voc_v <= 0 or module_isc_a <= 0 or controller_max_pv_voltage_v <= 0:
         raise ValueError("module and controller ratings must be positive")
-    if modules_in_series < 1 or modules_in_parallel < 1:
+    if (not isinstance(modules_in_series, (int, np.integer))
+            or not isinstance(modules_in_parallel, (int, np.integer))
+            or modules_in_series < 1 or modules_in_parallel < 1):
         raise ValueError("series and parallel counts must be positive integers")
     if not 0 < voltage_design_margin <= 1 or current_design_margin < 1:
         raise ValueError("invalid design margins")
@@ -254,6 +261,7 @@ def simulate_hourly_dispatch(
         possible_store = charge_input_kw * interval_hours * charge_efficiency
         room = max(battery_capacity_kwh - stored, 0.0)
         stored_energy = min(possible_store, room)
+        stored += stored_energy
         actual_charge_input = stored_energy / (interval_hours * charge_efficiency)
         curtailed_kw = max(surplus_kw - actual_charge_input, 0.0)
 
