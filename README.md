@@ -1,16 +1,19 @@
 # Standalone PV System Design
 
-An engineering calculation toolkit for preliminary standalone solar PV sizing and techno-economic analysis. The complete project source package is provided in [source-code.zip](./source-code.zip).
+A preliminary engineering toolkit for off-grid solar PV sizing and techno-economic screening.
 
-## What is included
+## Project contents
 
-The source archive contains Python sizing and economics modules, a load-profile CSV, design configuration, a Jupyter walkthrough, a command-line design runner, tests and engineering-method documentation.
-
-The calculations cover load demand, PV array sizing, battery energy and autonomy, inverter capacity, preliminary DC-side sizing and lifecycle economics.
+- `src/standalone_pv_design/sizing.py`: daily energy, PV array rating, battery nominal capacity, inverter rating and first-pass charge-controller current.
+- `src/standalone_pv_design/economics.py`: discounted lifecycle cash-flow helper.
+- `scripts/run_design.py`: loads the illustrative hourly profile and design configuration.
+- `config/design.json`: solar resource, autonomy, voltage, derating and equipment assumptions.
+- `data/demo/load_profile_synthetic.csv`: 24-hour synthetic load profile.
+- `notebooks/01_standalone_pv_sizing_walkthrough.ipynb`: interactive design walkthrough.
+- `tests/`: manual calculation and validation tests.
+- `source-code.zip`: downloadable CI-free source package.
 
 ## Quick start
-
-Download and extract [source-code.zip](./source-code.zip), then run from the extracted project directory:
 
 ```bash
 python -m venv .venv
@@ -24,8 +27,12 @@ python scripts/run_design.py
 
 ## Engineering limitations
 
-The default load profile and configuration are illustrative. Actual design requires site-specific solar resource data, temperature and shading analysis, applicable electrical codes, certified equipment datasheets, cable/voltage-drop and protection studies, battery chemistry limits, installation losses and qualified engineering review. The code is a preliminary sizing aid, not a construction-ready design.
+The sizing formulas are preliminary. Actual design requires site-specific solar resource and temperature data, shading and seasonal analysis, certified equipment datasheets, battery chemistry and C-rate constraints, inverter surge requirements, wiring ampacity and voltage-drop calculations, protection coordination, grounding, lightning/surge protection, applicable standards and qualified engineering review.
 
-**No GitHub Actions or CI workflow is included, as requested.** Local tests are retained for manual verification.
+The bundled load profile and configuration are illustrative, not a construction-ready design. Do not use the simplified current estimate as a final cable or protection selection.
 
-[Download complete source package](./source-code.zip)
+No GitHub Actions or CI workflow is configured. Tests are available for manual local execution.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
