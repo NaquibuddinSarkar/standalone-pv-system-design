@@ -7,5 +7,8 @@
   "battery_efficiency": 0.9,
   "power_factor": 0.9,
   "inverter_margin": 1.25,
-  "notes": "Illustrative values. Replace with measured site load, verified solar resource and certified equipment specifications."
+  "notes": "Illustrative values only. Replace with measured site load, verified monthly solar resource and certified equipment specifications.",
+  "inverter_efficiency": 0.92,
+  "interval_hours": 1,
+  "charge_controller_safety_factor": 1.25
 }
