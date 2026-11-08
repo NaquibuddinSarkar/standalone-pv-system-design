@@ -33,6 +33,8 @@ def validate_load_profile(load_profile_w, interval_hours=1.0):
 def calculate_daily_energy(load_profile_w, interval_hours=1.0):
     """Return energy in kWh for the supplied representative-day profile."""
     loads = validate_load_profile(load_profile_w, interval_hours)
+    if not np.isclose(loads.size * interval_hours, 24.0):
+        raise ValueError("a representative daily profile must cover exactly 24 hours")
     return float(loads.sum() * interval_hours / 1000.0)
 
 
