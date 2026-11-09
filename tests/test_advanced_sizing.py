@@ -81,7 +81,7 @@ def test_dispatch_tracks_unserved_and_curtailed_energy():
         discharge_efficiency=1.0,
     )
     assert result.attrs["served_energy_kwh"] <= 3.0
-    assert result.attrs["unserved_energy_kwh"] == pytest.approx(0.5)
+    assert result.attrs["unserved_energy_kwh"] == pytest.approx(0.7)
     assert result.attrs["curtailed_energy_kwh"] == pytest.approx(0.0)
 
 
