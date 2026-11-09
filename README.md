@@ -44,7 +44,7 @@ For hourly loads in watts:
 
 ### PV array
 
-`PV size (kWp) = design daily energy (kWh/day) / [peak sun hours × system derate]`
+`PV size (kWp) = daily AC energy / [PSH × PV-side derate × inverter efficiency]`
 
 The derate factor is an aggregate planning assumption. In a real design, explicitly account for module temperature, dust/soiling, mismatch, DC wiring, controller, battery and inverter losses instead of hiding all losses in one number.
 
@@ -52,11 +52,11 @@ The derate factor is an aggregate planning assumption. In a real design, explici
 
 `Battery nominal kWh = daily energy × autonomy days / (DoD × battery efficiency × inverter efficiency)`
 
-This is a first-pass energy calculation. Battery chemistry, permitted C-rate, temperature, ageing, end-of-life capacity, low-voltage cut-off and manufacturer requirements can change the result.
+This is a first-pass energy calculation. The code also applies inverter efficiency. Battery chemistry, permitted C-rate, temperature, ageing, end-of-life capacity, low-voltage cut-off and manufacturer requirements can change the result.
 
 ### Inverter rating
 
-The tool estimates a preliminary continuous rating from peak load and sizing margin. Check both kW and kVA, power factor, motor starting current, surge duration, harmonics and the inverter's overload curve.
+The tool estimates a preliminary continuous apparent-power rating from peak load, power factor and a sizing margin. It also includes a basic cold-corrected PV string Voc/current screen and a simple hourly battery dispatch demonstration. Check both kW and kVA, power factor, motor starting current, surge duration, harmonics and the inverter's overload curve.
 
 ## Data sources and standards to consult
 
@@ -94,7 +94,7 @@ outputs/      generated results
 
 ## Limitations
 
-The current simplified model does not fully simulate hourly battery dispatch, state of charge, unmet load, loss-of-load probability, seasonal PV production, shading, battery degradation, temperature-corrected module strings, inverter efficiency curves, protection coordination or detailed cable installation conditions. A stronger project-specific design should add hourly dispatch simulation and a full equipment schedule.
+The hourly dispatch helper is intentionally simplified and does not model battery electrochemistry, temperature, voltage curves, C-rate ageing, full inverter efficiency maps, loss-of-load probability over multiple weather years, protection coordination or detailed cable installation conditions. The PV string and cable helpers are screening checks only. A construction design still requires a full engineering schedule and review.
 
 ## Reproducibility
 
